@@ -1,77 +1,108 @@
-class student:
-    def __init__(self, name, marks):
+# from operations import add_student, add_marks, display, display_all_students, update_marks, delete_student
+
+# class student:
+#     def __init__(self, name, marks):
         
-        self.name = name
-        self.marks = marks
+#         self.name = name
+#         self.marks = marks
 
-studentslist = {}
+# studentslist = {}
 
-option = input("Do you want to load existing student data from file? (yes/no): ").strip().lower()
-if option == "yes":
-    with open("student.txt", "r") as f:
-        for line in f:
-            roll_no, name, marks = line.strip().split(",")
-            roll_no = int(roll_no)
-            marks = float(marks)
-            obj = student(name, marks)
-            studentslist[roll_no] = obj
+# option = input("Do you want to load existing student data from file? (yes/no): ").strip().lower()
+# if option == "yes":
+#     with open("student.txt", "r") as f:
+#         for line in f:
+#             roll_no, name, marks = line.strip().split(",")
+#             roll_no = int(roll_no)
+#             marks = float(marks)
+#             obj = student(name, marks)
+#             studentslist[roll_no] = obj
 
-else:
-    n = int(input("How many students? "))
+# else:
+#     n = int(input("How many students? "))
 
 
-    for _ in range(n):
-        roll_no = int(input("Enter the student's unique roll number: "))
-        name = input("Enter the student's name: ")
-        marks = float(input("Enter the student's marks: "))
-        obj = student(name, marks)
+#     for _ in range(n):
+#         roll_no = int(input("Enter the student's unique roll number: "))
+#         name = input("Enter the student's name: ")
+#         marks = float(input("Enter the student's marks: "))
+#         obj = student(name, marks)
 
-        studentslist[roll_no] = obj
-
+#         studentslist[roll_no] = obj
 
 
 import operations
 
+
 def menu():
 
-    choice = 0
-    while choice != 5:
+    while True:
 
-        print("Enter 1 to display all student details")
-        print("Enter 2 to display a particular student's marks")
-        print("Enter 3 to update student marks")
-        print("Enter 4 to delete a student")
-        print("Enter 5 to exit")
+        print("\n--- Student Performance Tracker ---")
+        print("1. Add student")
+        print("2. Display all students")
+        print("3. Display a student")
+        print("4. Update marks")
+        print("5. Delete student")
+        print("6. Exit")
 
         choice = int(input("Enter your choice: "))
 
         if choice == 1:
-            operations.display_all_students(studentslist)
+
+            Roll_no = int(input("Enter roll number: "))
+            name = input("Enter student name: ")
+
+            n = int(input("Enter number of subjects: "))
+
+            subjects_marks = []
+
+            for i in range(n):
+
+                subject = input(f"Enter subject {i + 1}: ")
+                marks = int(input(f"Enter marks for {subject}: "))
+
+                subjects_marks.append((subject, marks))
+
+            operations.add_student_with_marks(
+                Roll_no,
+                name,
+                subjects_marks
+            )
 
         elif choice == 2:
-            roll_no = int(input("Enter the roll number of the student: "))
-            operations.display(studentslist, roll_no)
+            operations.display_all_students()
 
         elif choice == 3:
-            roll_no = int(input("Enter the roll number of the student: "))
-            new_marks = float(input("Enter new marks: "))
-            operations.update_marks(studentslist, roll_no, new_marks)
+            Roll_no = int(input("Enter roll number: "))
+
+            operations.display(Roll_no)
 
         elif choice == 4:
-            roll_no = int(input("Enter the roll number of the student to delete: "))
-            operations.delete_student(studentslist, roll_no)
+            Roll_no = int(input("Enter roll number: "))
+            subject = input("Enter subject: ")
+            new_marks = int(input("Enter new marks: "))
+
+            operations.update_marks(Roll_no, subject, new_marks)
 
         elif choice == 5:
+            Roll_no = int(input("Enter roll number: "))
+
+            operations.delete_student(Roll_no)
+
+        elif choice == 6:
             print("Exiting...")
-            return
+            break
+
         else:
             print("Invalid choice. Please try again.")
 
 
-
 menu()
 
-with open("student.txt", "w") as f:
-    for roll_no in studentslist:
-        f.write(f"{roll_no},{studentslist[roll_no].name},{studentslist[roll_no].marks}\n")
+    
+
+# with open("student.txt", "w") as f:
+#     for roll_no in studentslist:
+#         f.write(f"{roll_no},{studentslist[roll_no].name},{studentslist[roll_no].marks}\n")
 
